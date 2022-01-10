@@ -1,0 +1,80 @@
+{
+  "name": "usom",
+  "version": "1.0.0",
+  "label": "USOM",
+  "description": "USOM Lookup Connector",
+  "publisher": "Fortinet Turkey",
+  "icon_small_name": "usom_small.png",
+  "icon_large_name": "usom_large.png",
+  "cs_approved": false,
+  "cs_compatible": true,
+  "category": "investigation",
+  "help_online": "https://www.usom.gov.tr",
+  "configuration": {
+    "fields": [
+      {
+        "title": "URL",
+        "required": true,
+        "editable": true,
+        "visible": true,
+        "type": "text",
+        "description": "Usom XML URL",
+        "name": "url",
+        "tooltip": "Type USOM XML URL",
+        "value": "https://www.usom.gov.tr/url-list.xml"
+      },
+      {
+        "title": "Verify SSL",
+        "required": false,
+        "editable": true,
+        "visible": true,
+        "type": "checkbox",
+        "value": "True",
+        "name": "verify"
+      },
+      {
+        "title": "Retention",
+        "required": true,
+        "editable": true,
+        "visible": true,
+        "type": "integer",
+        "description": "Threat list expire limit",
+        "name": "expire_hours",
+        "tooltip": "Minimum 2 Hours",
+        "value": "12"
+      }
+    ]
+  },
+  "operations": [
+    {
+      "operation": "lookup_url",
+      "title": "Lookup URL",
+      "description": "USOM url lookup",
+      "category": "investigation",
+      "annotation": "lookup_url",
+      "parameters": [
+        {
+          "title": "URL",
+          "required": true,
+          "editable": true,
+          "visible": true,
+          "type": "text",
+          "name": "url",
+          "description": "URL"
+        }
+      ],
+      "enabled": true,
+      "output_schema": {
+        "found": "",
+        "id": "",
+        "url": "",
+        "desc": "",
+        "source": "",
+        "date": ""
+      }
+    }
+  ],
+  "playbooks": [
+    {}
+  ]
+}
