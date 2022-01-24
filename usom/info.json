@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "label": "USOM",
   "description": "USOM Lookup Connector",
-  "publisher": "Fortinet Turkey",
+  "publisher": "Community",
   "icon_small_name": "usom_small.png",
   "icon_large_name": "usom_large.png",
   "cs_approved": false,
@@ -47,11 +47,11 @@
   },
   "operations": [
     {
-      "operation": "lookup_url",
+      "operation": "lookup",
       "title": "Lookup URL",
-      "description": "USOM url lookup",
+      "description": "USOM lookup",
       "category": "investigation",
-      "annotation": "lookup_url",
+      "annotation": "lookup",
       "parameters": [
         {
           "title": "URL",
