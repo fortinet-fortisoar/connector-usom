@@ -41,7 +41,11 @@
         "description": "Threat list expire limit",
         "name": "expire_hours",
         "tooltip": "Minimum 2 Hours",
-        "value": "12"
+        "value": "12",
+         "validation":{
+            "pattern":"\\d+",
+            "patternError":"Must be valid number."
+          }
       }
     ]
   },
