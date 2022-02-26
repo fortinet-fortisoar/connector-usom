@@ -12,6 +12,7 @@ def get_feed(config, params):
         verify = config.get("verify")
         response = requests.get(url, verify=verify)
         content = xmltodict.parse(response.text)
+        content = content["usom-data"]["url-list"]
         return content
     except Exception as e:
         logger.exception("An exception occurred {0}".format(e))
