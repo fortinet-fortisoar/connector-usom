@@ -31,51 +31,27 @@
         "type": "checkbox",
         "value": "True",
         "name": "verify"
-      },
-      {
-        "title": "Retention",
-        "required": true,
-        "editable": true,
-        "visible": true,
-        "type": "integer",
-        "description": "Threat list expire limit",
-        "name": "expire_hours",
-        "tooltip": "Minimum 2 Hours",
-        "value": "12",
-         "validation":{
-            "pattern":"\\d+",
-            "patternError":"Must be valid number."
-          }
       }
     ]
   },
   "operations": [
     {
-      "operation": "lookup",
-      "title": "Lookup URL",
-      "description": "USOM lookup",
+      "operation": "get_feed",
+      "title": "Get Feed",
+      "description": "USOM feed",
       "category": "investigation",
-      "annotation": "lookup",
-      "parameters": [
-        {
-          "title": "URL",
-          "required": true,
-          "editable": true,
-          "visible": true,
-          "type": "text",
-          "name": "url",
-          "description": "URL"
-        }
-      ],
+      "annotation": "get_feed",
+      "parameters": [],
       "enabled": true,
-      "output_schema": {
-        "found": "",
-        "id": "",
-        "url": "",
-        "desc": "",
-        "source": "",
-        "date": ""
-      }
+      "output_schema": [
+        {
+          "id": "",
+          "url": "",
+          "desc": "",
+          "source": "",
+          "date": ""
+        }
+      ]
     }
   ],
   "playbooks": [
