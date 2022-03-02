@@ -31,3 +31,8 @@ def _check_health(config):
         return True
     except Exception as e:
         raise ConnectorError("Unable to connect USOM {0}".format(e))
+
+
+operations = {
+    'get_feed': get_feed
+}

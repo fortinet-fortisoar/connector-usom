@@ -1,5 +1,5 @@
 from connectors.core.connector import Connector, ConnectorError, get_logger
-from .operations import get_feed, _check_health
+from .operations import get_feed, operations, _check_health
 
 logger = get_logger('usom')
 
@@ -7,9 +7,6 @@ logger = get_logger('usom')
 class Usom(Connector):
     def execute(self, config, operation_name, params, **kwargs):
         logger.info("operation_name: {0}".format(operation_name))
-        operations = {
-            'get_feed': get_feed
-        }
         action = operations.get(operation_name)
         return action(config, params)
 
@@ -18,4 +15,3 @@ class Usom(Connector):
             return _check_health(config)
         except Exception as e:
             raise ConnectorError(e)
-
