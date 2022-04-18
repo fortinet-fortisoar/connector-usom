@@ -1,0 +1,60 @@
+{
+  "name": "usom",
+  "version": "1.0.0",
+  "label": "USOM",
+  "description": "USOM Lookup Connector",
+  "publisher": "Community",
+  "icon_small_name": "usom_small.png",
+  "icon_large_name": "usom_large.png",
+  "cs_approved": false,
+  "cs_compatible": true,
+  "category": "investigation",
+  "help_online": "",
+  "configuration": {
+    "fields": [
+      {
+        "title": "URL",
+        "required": true,
+        "editable": true,
+        "visible": true,
+        "type": "text",
+        "description": "Usom XML URL",
+        "name": "url",
+        "tooltip": "Type USOM XML URL",
+        "value": "https://www.usom.gov.tr/url-list.xml"
+      },
+      {
+        "title": "Verify SSL",
+        "required": false,
+        "editable": true,
+        "visible": true,
+        "type": "checkbox",
+        "value": "true",
+        "name": "verify"
+      }
+    ]
+  },
+  "operations": [
+    {
+      "operation": "get_feed",
+      "title": "Get Feed",
+      "description": "USOM feed",
+      "category": "investigation",
+      "annotation": "get_feed",
+      "parameters": [],
+      "enabled": true,
+      "output_schema": [
+        {
+          "id": "",
+          "url": "",
+          "desc": "",
+          "source": "",
+          "date": ""
+        }
+      ]
+    }
+  ],
+  "playbooks": [
+    {}
+  ]
+}
