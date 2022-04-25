@@ -1,25 +1,38 @@
 {
   "name": "usom",
   "version": "1.0.0",
-  "label": "USOM",
-  "description": "USOM Lookup Connector",
-  "publisher": "Community",
+  "label": "USOM Feed",
+  "category": "Threat Intelligence",
+  "description": "USOM has URL's and it is lookup connector. This connector facilitates automated operations to fetch these indicators and ingestion of daily threat feeds. This connector has a dependency on the <a href=\"/content-hub/all-content/?contentType=solutionpack&amp;tag=ThreatIntelManagement\" target=\"_blank\" rel=\"noopener\">Threat Intel Management Solution Pack</a>. Install the Solution Pack before enabling ingestion of Threat Feeds from this source.",
+  "publisher": "Fortinet",
+  "cs_approved": true,
+  "cs_compatible": true,
   "icon_small_name": "usom_small.png",
   "icon_large_name": "usom_large.png",
-  "cs_approved": false,
-  "cs_compatible": true,
-  "category": "investigation",
   "help_online": "",
+  "tags": [
+    "ThreatIntel"
+  ],
+  "ingestion_supported": true,
+  "ingestion_modes": [
+    "scheduled"
+  ],
+  "ingestion_preferences": {
+    "modules": [
+      "threat_intel_feeds",
+      "indicators"
+    ]
+  },
   "configuration": {
     "fields": [
       {
-        "title": "URL",
+        "title": "Server URL",
         "required": true,
         "editable": true,
         "visible": true,
         "type": "text",
         "description": "Usom XML URL",
-        "name": "url",
+        "name": "server_url",
         "tooltip": "Type USOM XML URL",
         "value": "https://www.usom.gov.tr/url-list.xml"
       },
@@ -36,12 +49,24 @@
   },
   "operations": [
     {
-      "operation": "get_feed",
-      "title": "Get Feed",
+      "operation": "fetch_indicators",
+      "title": "Fetch Indicators",
       "description": "USOM feed",
       "category": "investigation",
-      "annotation": "get_feed",
-      "parameters": [],
+      "annotation": "fetch_indicators",
+      "parameters": [
+        {
+          "title": "Modified After",
+          "description": "Last time the feeds were pulled",
+          "type": "datetime",
+          "name": "modified_after",
+          "required": false,
+          "editable": true,
+          "visible": true,
+          "tooltip": "The data will be returned from USOM Feed only if the feed has been refreshed after the specified time.",
+          "description": "A list of URL's data will be returned only if the feed has been refreshed after the specified time."
+        }
+      ],
       "enabled": true,
       "output_schema": [
         {
@@ -53,8 +78,5 @@
         }
       ]
     }
-  ],
-  "playbooks": [
-    {}
   ]
 }
