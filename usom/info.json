@@ -49,11 +49,11 @@
   },
   "operations": [
     {
-      "operation": "fetch_indicators",
+      "operation": "get_feed",
       "title": "Fetch Indicators",
       "description": "USOM feed",
       "category": "investigation",
-      "annotation": "fetch_indicators",
+      "annotation": "get_feed",
       "parameters": [
         {
           "title": "Modified After",

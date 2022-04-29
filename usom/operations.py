@@ -31,9 +31,6 @@ def make_rest_call(config, method='GET'):
         raise ConnectorError('The server did not send any data in the allotted amount of time')
     except requests.exceptions.ConnectionError:
         raise ConnectorError('Invalid endpoint or credentials')
-    except Exception as err:
-        logger.exception(str(err))
-        raise ConnectorError(str(err))
 
 
 
@@ -65,7 +62,7 @@ def check_duplicate_records(input_list):
     return final_result
 
 
-def fetch_indicators(config, params):
+def get_feed(config, params):
     try:
         last_pull_time = params.get('modified_after')
         response = make_rest_call(config)
@@ -92,5 +89,5 @@ def fetch_indicators(config, params):
 
 
 operations = {
-    'fetch_indicators': fetch_indicators
+    'get_feed': get_feed
 }

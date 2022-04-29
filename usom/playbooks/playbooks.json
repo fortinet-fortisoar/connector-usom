@@ -6,13 +6,9 @@
       "name": "Sample - USOM Feed - 1.0.0",
       "description": "Sample playbooks for \"USOM Feed\" connector. If you are planning to use any of the sample playbooks in your environment, ensure that you clone those playbooks and move them to a different collection, since the sample playbook collection gets deleted during connector upgrade and delete.",
       "visible": true,
-      "image": "/api/3/images/d63b2adc-bfa7-4de6-b1c2-494016086116",
+      "image": "playbooks.png",
       "uuid": "59f165b9-f7d7-480b-a0db-7722de3bc2c6",
       "id": 56,
-      "createUser": "/api/3/appliances/57545210-2adc-472b-a24f-2df6ee8dfe63",
-      "createDate": 1650618903.474061,
-      "modifyUser": "/api/3/appliances/57545210-2adc-472b-a24f-2df6ee8dfe63",
-      "modifyDate": 1650618903.474061,
       "deletedAt": null,
       "importedBy": [],
       "recordTags": [],
@@ -22,8 +18,8 @@
           "triggerLimit": null,
           "name": "USOM Feed > Ingest",
           "aliasName": null,
-          "tag": "#usom-feed #dataingestion #ingest",
-          "description": "Fetch Collections from AWS Feed",
+          "tag": null,
+          "description": "Fetch Collections from USOM Feed",
           "isActive": false,
           "debug": true,
           "singleRecordExecution": false,
@@ -202,7 +198,7 @@
           "recordTags": [
             "dataingestion",
             "ingest",
-            "usom-feed"
+            "usom"
           ]
         },
         {
@@ -210,8 +206,8 @@
           "triggerLimit": null,
           "name": "> USOM Feed > Fetch and Create",
           "aliasName": null,
-          "tag": "#usom-feed #dataingestion #create #fetch",
-          "description": "Fetch and Create Indicators from AWS Feed",
+          "tag": null,
+          "description": "Fetch and Create Indicators from USOM Feed",
           "isActive": false,
           "debug": true,
           "singleRecordExecution": false,
@@ -316,7 +312,7 @@
                 },
                 "version": "1.0.0",
                 "connector": "usom",
-                "operation": "fetch_indicators",
+                "operation": "get_feed",
                 "operationTitle": "Fetch Indicators",
                 "pickFromTenant": false,
                 "step_variables": []
@@ -493,7 +489,7 @@
             "dataingestion",
             "create",
             "fetch",
-            "usom-feed"
+            "usom"
           ]
         },
         {
@@ -501,8 +497,8 @@
           "triggerLimit": null,
           "name": "Get Indicators",
           "aliasName": null,
-          "tag": "#usom-feed",
-          "description": "Retrieve list of all indicators form AWS feed",
+          "tag": null,
+          "description": "Retrieve list of all indicators form USOM feed",
           "isActive": false,
           "debug": true,
           "singleRecordExecution": false,
@@ -526,7 +522,7 @@
                 },
                 "version": "1.0.0",
                 "connector": "usom",
-                "operation": "fetch_indicators",
+                "operation": "get_feed",
                 "operationTitle": "Fetch Indicators",
                 "pickFromTenant": false,
                 "step_variables": []
@@ -543,7 +539,7 @@
               "description": null,
               "arguments": {
                 "route": "cbd9586c-49aa-4064-b639-4df378d23eab",
-                "title": "AWS Feed: Get Indicators",
+                "title": "USOM Feed: Get Indicators",
                 "resources": [
                   "alerts"
                 ],
@@ -588,7 +584,7 @@
           "deletedAt": null,
           "importedBy": [],
           "recordTags": [
-            "usom-feed",
+            "usom",
             "USOM"
           ]
         }
@@ -598,7 +594,7 @@
   "exported_tags": [
     "dataingestion",
     "ingest",
-    "usom-feed",
+    "usom",
     "create",
     "fetch",
     "USOM"
