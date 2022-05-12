@@ -1,0 +1,602 @@
+{
+  "type": "workflow_collections",
+  "data": [
+    {
+      "@type": "WorkflowCollection",
+      "name": "Sample - USOM Feed - 1.0.0",
+      "description": "Sample playbooks for \"USOM Feed\" connector. If you are planning to use any of the sample playbooks in your environment, ensure that you clone those playbooks and move them to a different collection, since the sample playbook collection gets deleted during connector upgrade and delete.",
+      "visible": true,
+      "image": "playbooks.png",
+      "uuid": "59f165b9-f7d7-480b-a0db-7722de3bc2c6",
+      "id": 56,
+      "deletedAt": null,
+      "importedBy": [],
+      "recordTags": [],
+      "workflows": [
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "USOM Feed > Ingest",
+          "aliasName": null,
+          "tag": null,
+          "description": "Fetch Collections from USOM Feed",
+          "isActive": false,
+          "debug": true,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1650522235,
+          "collection": "/api/3/workflow_collections/59f165b9-f7d7-480b-a0db-7722de3bc2c6",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/290d715d-a812-4d8f-8dd1-8714582a10b7",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "step_variables": {
+                  "input": {
+                    "params": []
+                  }
+                }
+              },
+              "status": null,
+              "top": "20",
+              "left": "20",
+              "stepType": "/api/3/workflow_step_types/b348f017-9a94-471f-87f8-ce88b6a7ad62",
+              "uuid": "290d715d-a812-4d8f-8dd1-8714582a10b7"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Update Pull Time",
+              "description": null,
+              "arguments": {
+                "params": {
+                  "macro": "{{vars.pullTimeMacro}}",
+                  "value": "{{vars.steps.Fetch_Indicators.currentPullTime}}"
+                },
+                "version": "3.2.0",
+                "connector": "cyops_utilities",
+                "operation": "updatemacro",
+                "operationTitle": "CyOPs: Update Macro",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "460",
+              "left": "960",
+              "stepType": "/api/3/workflow_step_types/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+              "uuid": "58ea26a8-242f-499d-bbce-12484a9a18f0"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Fetch Indicators",
+              "description": null,
+              "arguments": {
+                "arguments": {
+                  "lastPullTime": "{{vars.lastPullTime}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "workflowReference": "/api/3/workflows/5aaab42b-fe39-4fba-93fb-5b185fa7a60d"
+              },
+              "status": null,
+              "top": "360",
+              "left": "760",
+              "stepType": "/api/3/workflow_step_types/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+              "uuid": "77ae1fb4-9bf3-4522-834d-9f77ca7ca130"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Extract Value from Response",
+              "description": null,
+              "arguments": {
+                "lastPullTime": "{% if (vars.steps.Get_Macro_Value.data[\"hydra:member\"] | length) > 0%}{{vars.steps.Get_Macro_Value.data[\"hydra:member\"][0].value }}{% else %}0{% endif %}"
+              },
+              "status": null,
+              "top": "260",
+              "left": "560",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "uuid": "a1f93969-d728-45f5-9e90-cfd3fa1ec65b"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Macro Value",
+              "description": null,
+              "arguments": {
+                "params": {
+                  "iri": "/api/wf/api/dynamic-variable/?name={{vars.pullTimeMacro}}",
+                  "body": "",
+                  "method": "GET"
+                },
+                "version": "3.2.0",
+                "connector": "cyops_utilities",
+                "operation": "make_cyops_request",
+                "operationTitle": "FSR: Make FortiSOAR API Call",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "180",
+              "left": "380",
+              "stepType": "/api/3/workflow_step_types/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+              "uuid": "c4c1cfab-2605-422b-8731-e1235e1772a7"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Configuration",
+              "description": null,
+              "arguments": {
+                "fetchTime": "0",
+                "pullTimeMacro": "USOMFeedLastPullTime_{{vars['audit_info']['cyops_playbook_iri'].split('/')[-1].replace('-','_')}}"
+              },
+              "status": null,
+              "top": "100",
+              "left": "180",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "uuid": "f3a8e73e-65f1-4cbc-99f9-894ee9f2da86"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Extract Value from Response -> Fetch Indicators",
+              "targetStep": "/api/3/workflow_steps/77ae1fb4-9bf3-4522-834d-9f77ca7ca130",
+              "sourceStep": "/api/3/workflow_steps/a1f93969-d728-45f5-9e90-cfd3fa1ec65b",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "045d075c-1eb3-467d-938a-3868f6ea0b6e"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Configuration",
+              "targetStep": "/api/3/workflow_steps/f3a8e73e-65f1-4cbc-99f9-894ee9f2da86",
+              "sourceStep": "/api/3/workflow_steps/290d715d-a812-4d8f-8dd1-8714582a10b7",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "20953061-1c67-4c7d-907c-3a746942553d"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Get Macro Value -> Extract Value from Response",
+              "targetStep": "/api/3/workflow_steps/a1f93969-d728-45f5-9e90-cfd3fa1ec65b",
+              "sourceStep": "/api/3/workflow_steps/c4c1cfab-2605-422b-8731-e1235e1772a7",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "63607892-dc50-494b-b373-656374ddc192"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Configuration -> Get Macro Value",
+              "targetStep": "/api/3/workflow_steps/c4c1cfab-2605-422b-8731-e1235e1772a7",
+              "sourceStep": "/api/3/workflow_steps/f3a8e73e-65f1-4cbc-99f9-894ee9f2da86",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "85ef4e8a-6f53-4000-bf80-d2eaffc5f815"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Fetch Indicators -> Update Pull Time",
+              "targetStep": "/api/3/workflow_steps/58ea26a8-242f-499d-bbce-12484a9a18f0",
+              "sourceStep": "/api/3/workflow_steps/77ae1fb4-9bf3-4522-834d-9f77ca7ca130",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "de936410-5c36-472b-9503-4ab15829bd36"
+            }
+          ],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "522fef85-bed5-4c59-8df5-1e5a20b47f13",
+          "id": 596,
+          "createUser": "/api/3/appliances/57545210-2adc-472b-a24f-2df6ee8dfe63",
+          "createDate": 1650618903.474929,
+          "modifyUser": "/api/3/appliances/57545210-2adc-472b-a24f-2df6ee8dfe63",
+          "modifyDate": 1650618903.474929,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "dataingestion",
+            "ingest",
+            "usom"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "> USOM Feed > Fetch and Create",
+          "aliasName": null,
+          "tag": null,
+          "description": "Fetch and Create Indicators from USOM Feed",
+          "isActive": false,
+          "debug": true,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [
+            "lastPullTime"
+          ],
+          "synchronous": false,
+          "lastModifyDate": 1650880401,
+          "collection": "/api/3/workflow_collections/59f165b9-f7d7-480b-a0db-7722de3bc2c6",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/21e528b3-8879-4d02-97d2-11fdbdb48fa1",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "step_variables": {
+                  "input": {
+                    "params": []
+                  },
+                  "_configuration_schema": "[\n  {\n    \"title\": \"Confidence\",\n    \"name\": \"confidence\",\n    \"type\": \"integer\",\n    \"tooltip\": \"Default Confidence score to be set for the feeds\",\n    \"required\": false,\n    \"editable\": true,\n    \"visible\": true,\n    \"value\": 90,\n    \"validation\": {\n       \"minlength\": 0,\n       \"maxlength\": 100\n    }\n  },\n  {\n    \"title\": \"Reputation\",\n    \"name\": \"reputation\",\n    \"type\": \"select\",\n    \"tooltip\": \"Default Reputation to be set for the feeds\",\n    \"required\": true,\n    \"editable\": true,\n    \"visible\": true,\n    \"options\": [\"Good\", \"Suspicious\", \"Malicious\", \"No Reputation Available\", \"TBD\"],\n    \"value\": \"Good\"\n  },\n  {\n    \"title\": \"TLP\",\n    \"name\": \"tlp\",\n    \"type\": \"select\",\n    \"tooltip\": \"Default TLP to be set for the feeds\",\n    \"required\": false,\n    \"editable\": true,\n    \"visible\": true,\n    \"options\": [\"Red\", \"Amber\", \"Green\", \"White\"],\n    \"value\": \"White\"\n  },\n  {\n    \"title\": \"Maximum Age (in days)\",\n    \"name\": \"expiry\",\n    \"type\": \"integer\",\n    \"tooltip\": \"Default age for the feeds. The indicator expires on 'valid_until' date unless a different expiry is specified here. If specified, the indicator will be marked expired on valid_from + expiry.\",\n    \"required\": false,\n    \"editable\": true,\n    \"visible\": true\n  }\n]"
+                }
+              },
+              "status": null,
+              "top": "40",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/b348f017-9a94-471f-87f8-ce88b6a7ad62",
+              "uuid": "21e528b3-8879-4d02-97d2-11fdbdb48fa1"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Return Sample Data",
+              "description": null,
+              "arguments": {
+                "data": "[\n  {\n    \"id\": \"277380\",\n    \"url\": \"kefilsizdenizonlinekredi.co.vu\",\n    \"date\": \"2022-04-19 07:29:16.518721\",\n    \"desc\": \"BP\",\n    \"source\": \"IH\"\n  },\n  {\n    \"id\": \"277378\",\n    \"url\": \"bimcellgece68.com\",\n    \"date\": \"2022-04-19 07:27:19.840839\",\n    \"desc\": \"BP\",\n    \"source\": \"IH\"\n  },\n  {\n    \"id\": \"277376\",\n    \"url\": \"bimclelpzrtct.com\",\n    \"date\": \"2022-04-19 07:26:29.016155\",\n    \"desc\": \"BP\",\n    \"source\": \"IH\"\n  },\n  {\n    \"id\": \"277374\",\n    \"url\": \"jeffgbimcell.com\",\n    \"date\": \"2022-04-19 07:23:38.941222\",\n    \"desc\": \"BP\",\n    \"source\": \"IH\"\n  }\n]"
+              },
+              "status": null,
+              "top": "480",
+              "left": "880",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "uuid": "2baa3f72-a16a-44c3-83e1-137308c5bc34"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Create Record",
+              "description": null,
+              "arguments": {
+                "for_each": {
+                  "item": "{{vars.steps.Get_Indicators.data}}",
+                  "__bulk": true,
+                  "parallel": false,
+                  "condition": "",
+                  "batch_size": 200
+                },
+                "resource": {
+                  "tLP": "{% if vars.tlp %}{{ vars.tlp | resolveRange(vars.tlp_map)}}{% endif %}",
+                  "value": "{{vars.item.url}}",
+                  "source": "USOM Feed",
+                  "__replace": "",
+                  "expiresOn": "{% if vars.expiry %}{{ arrow.get(vars.item.date).int_timestamp + (vars.expiry | int)*24*60*60 }}{% else %}None{% endif %}",
+                  "confidence": "{% if vars.confidence %}{{ vars.confidence }}{% endif %}",
+                  "reputation": "{% if vars.reputation %}{{ vars.reputation | resolveRange(vars.reputation_map)}}{% endif %}",
+                  "sourceData": "{{vars.item | toJSON}}",
+                  "typeOfFeed": "/api/3/picklists/76b68a66-ffaa-4003-b60d-a43fcc64c003"
+                },
+                "_showJson": false,
+                "collection": "/api/ingest-feeds/threat_intel_feeds",
+                "__recommend": [],
+                "step_variables": []
+              },
+              "status": null,
+              "top": "260",
+              "left": "1140",
+              "stepType": "/api/3/workflow_step_types/7b221880-716b-4726-a2ca-5e568d330b3e",
+              "uuid": "3d656970-dc6b-4ec8-823e-3db9287eb965"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Resolve Range",
+              "description": null,
+              "arguments": {
+                "tlp_resolved": "{{vars.tlp | resolveRange(vars.tlp_map)}}",
+                "reputation_resolved": "{{vars.reputation | resolveRange(vars.reputation_map)}}"
+              },
+              "status": null,
+              "top": "240",
+              "left": "380",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "uuid": "afe7f6cb-6177-4591-9e08-10151286cf8d"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Indicators",
+              "description": null,
+              "arguments": {
+                "name": "USOM",
+                "config": "d1e84137-68c2-4fdb-aa3a-3d9980a17582",
+                "params": {
+                  "modified_after": "{{vars.input.params.lastPullTime}}"
+                },
+                "version": "1.0.0",
+                "connector": "usom",
+                "operation": "get_feed",
+                "operationTitle": "Fetch Indicators",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "160",
+              "left": "860",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "uuid": "bd1758a6-1422-4fbd-b95d-74864190a61b"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Configuration",
+              "description": null,
+              "arguments": {
+                "tlp": "White",
+                "expiry": 90,
+                "tlp_map": "{'Red': {{'TrafficLightProtocol'| picklist('Red') }}, 'Amber': {{'TrafficLightProtocol'| picklist('Amber') }}, 'Green': {{'TrafficLightProtocol'| picklist('Green') }}, 'White': {{'TrafficLightProtocol'| picklist('White') }}}",
+                "confidence": 90,
+                "reputation": "Good",
+                "reputation_map": "{'Good': {{'IndicatorReputation'| picklist('Good') }}, 'Malicious': {{'IndicatorReputation'| picklist('Malicious') }}, 'Suspicious': {{'IndicatorReputation'| picklist('Suspicious') }}, 'TBD': {{'IndicatorReputation'| picklist('TBD') }}, 'No Reputation Available': {{'IndicatorReputation'| picklist('No Reputation Available') }}}",
+                "threat_intel_feeds_tLP_map": "{}",
+                "threat_intel_feeds_reputation_map": "{}",
+                "threat_intel_feeds_typeOfFeed_map": "{}",
+                "threat_intelligence_typeofindicator_map": "{'domain-name-value': {{'ThreatIntelFeedType'| picklist('Domain') }}, 'file-name': {{'ThreatIntelFeedType'| picklist('Filename') }}, 'file-hashes-MD5': {{'ThreatIntelFeedType'| picklist('FileHash-MD5') }}, 'file-hashes-SHA-1': {{'ThreatIntelFeedType'| picklist('FileHash-SHA1') }}, 'file-hashes-SHA-256': {{'ThreatIntelFeedType'| picklist('FileHash-SHA256') }}, 'ipv4-addr-value': {{'ThreatIntelFeedType'| picklist('IPv4 Address') }}, 'ipv6-addr-value': {{'ThreatIntelFeedType'| picklist('IPv6 Address') }}, 'windows-registry-key-key': {{'ThreatIntelFeedType'| picklist('Registry') }}, 'process-name': {{'ThreatIntelFeedType'| picklist('Process') }}, 'url-value': {{'ThreatIntelFeedType'| picklist('URL') }}, 'user-account-value': {{'ThreatIntelFeedType'| picklist('User') }}, 'email-message-from_ref-value': {{'ThreatIntelFeedType'| picklist('Email Address') }}, 'email-message-sender_ref-value': {{'ThreatIntelFeedType'| picklist('Email Address') }} }"
+              },
+              "status": null,
+              "top": "140",
+              "left": "220",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "uuid": "c94cc4fd-52f6-4959-bc6e-02fa591be30f"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Is data only for mapping",
+              "description": null,
+              "arguments": {
+                "conditions": [
+                  {
+                    "option": "Yes, For Mapping",
+                    "step_iri": "/api/3/workflow_steps/2baa3f72-a16a-44c3-83e1-137308c5bc34",
+                    "condition": "{{ vars.request.env_setup == true }}",
+                    "step_name": "Return Sample Data"
+                  },
+                  {
+                    "option": "No, For Ingestion",
+                    "default": true,
+                    "step_iri": "/api/3/workflow_steps/bd1758a6-1422-4fbd-b95d-74864190a61b",
+                    "step_name": "Get Indicators"
+                  }
+                ]
+              },
+              "status": null,
+              "top": "340",
+              "left": "540",
+              "stepType": "/api/3/workflow_step_types/12254cf5-5db7-4b1a-8cb1-3af081924b28",
+              "uuid": "db54cff8-dd35-40bd-a432-2e573d555e75"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Result",
+              "description": null,
+              "arguments": {
+                "currentPullTime": "{{vars.currentPullTime}}"
+              },
+              "status": null,
+              "top": "360",
+              "left": "1140",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "uuid": "e83d8201-b7e6-4355-b36a-ec2d857f4ebb"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Create Feed List",
+              "description": null,
+              "arguments": {
+                "data": "{{vars.steps.Get_Indicators.data}}",
+                "data_list": "[1,2,3,4]",
+                "currentPullTime": "{{arrow.get( arrow.utcnow().timestamp).strftime('%Y-%m-%dT%H:%M:%S.%fZ')}}"
+              },
+              "status": null,
+              "top": "160",
+              "left": "1140",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "uuid": "f83ac669-6853-47d0-8282-84f8856769eb"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Configuration",
+              "targetStep": "/api/3/workflow_steps/c94cc4fd-52f6-4959-bc6e-02fa591be30f",
+              "sourceStep": "/api/3/workflow_steps/21e528b3-8879-4d02-97d2-11fdbdb48fa1",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "60978998-763d-484d-80ff-f415d11f8bb1"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Create Feed List -> Create Record",
+              "targetStep": "/api/3/workflow_steps/3d656970-dc6b-4ec8-823e-3db9287eb965",
+              "sourceStep": "/api/3/workflow_steps/f83ac669-6853-47d0-8282-84f8856769eb",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "cf3768cc-2e12-4d3b-830d-2936d2a8a664"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Create Record -> Save Result",
+              "targetStep": "/api/3/workflow_steps/e83d8201-b7e6-4355-b36a-ec2d857f4ebb",
+              "sourceStep": "/api/3/workflow_steps/3d656970-dc6b-4ec8-823e-3db9287eb965",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "3cce163e-ab97-4a8f-b35e-5a8b416f6ea5"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Is data only for mapping -> Return Sample Data",
+              "targetStep": "/api/3/workflow_steps/2baa3f72-a16a-44c3-83e1-137308c5bc34",
+              "sourceStep": "/api/3/workflow_steps/db54cff8-dd35-40bd-a432-2e573d555e75",
+              "label": "Yes, For Mapping",
+              "isExecuted": false,
+              "uuid": "93b2eef7-8772-45f5-8665-78e182eb98d5"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Configuration -> Resolve Range",
+              "targetStep": "/api/3/workflow_steps/afe7f6cb-6177-4591-9e08-10151286cf8d",
+              "sourceStep": "/api/3/workflow_steps/c94cc4fd-52f6-4959-bc6e-02fa591be30f",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "a203a998-47c6-4d2e-b98f-f86af173a2bc"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Resolve Range -> Is data only for mapping",
+              "targetStep": "/api/3/workflow_steps/db54cff8-dd35-40bd-a432-2e573d555e75",
+              "sourceStep": "/api/3/workflow_steps/afe7f6cb-6177-4591-9e08-10151286cf8d",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "c6ffb7fe-2392-4374-a1f6-f0db7ae80792"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Is data only for mapping -> Get Indicators",
+              "targetStep": "/api/3/workflow_steps/bd1758a6-1422-4fbd-b95d-74864190a61b",
+              "sourceStep": "/api/3/workflow_steps/db54cff8-dd35-40bd-a432-2e573d555e75",
+              "label": "No, For Ingestion",
+              "isExecuted": false,
+              "uuid": "ff00509e-9bcd-4725-b821-0f27d0d4796a"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Get Indicators -> Create Feed List",
+              "targetStep": "/api/3/workflow_steps/f83ac669-6853-47d0-8282-84f8856769eb",
+              "sourceStep": "/api/3/workflow_steps/bd1758a6-1422-4fbd-b95d-74864190a61b",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "2659c2e2-6dd5-44dd-ba56-4f02255b9c4c"
+            }
+          ],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "5aaab42b-fe39-4fba-93fb-5b185fa7a60d",
+          "id": 597,
+          "createUser": "/api/3/appliances/57545210-2adc-472b-a24f-2df6ee8dfe63",
+          "createDate": 1650618903.475473,
+          "modifyUser": "/api/3/people/3451141c-bac6-467c-8d72-85e0fab569ce",
+          "modifyDate": 1650880401.238467,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "dataingestion",
+            "create",
+            "fetch",
+            "usom"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Indicators",
+          "aliasName": null,
+          "tag": null,
+          "description": "Retrieve list of all indicators form USOM feed",
+          "isActive": false,
+          "debug": true,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1650622802,
+          "collection": "/api/3/workflow_collections/59f165b9-f7d7-480b-a0db-7722de3bc2c6",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/3f4b0fec-d816-4755-bf6c-70a6bfad3f2c",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Indicators",
+              "description": null,
+              "arguments": {
+                "name": "USOM Feed",
+                "config": "e5013c91-bb7d-41df-af4e-9f591433af0c",
+                "params": {
+                  "modified_after": "2022-04-18T17:30:00.000Z"
+                },
+                "version": "1.0.0",
+                "connector": "usom",
+                "operation": "get_feed",
+                "operationTitle": "Fetch Indicators",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "180",
+              "left": "240",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "uuid": "224649f7-f051-4618-90d4-a0e7c15ed19f"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "cbd9586c-49aa-4064-b639-4df378d23eab",
+                "title": "USOM Feed: Get Indicators",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "uuid": "3f4b0fec-d816-4755-bf6c-70a6bfad3f2c"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Indicators",
+              "targetStep": "/api/3/workflow_steps/224649f7-f051-4618-90d4-a0e7c15ed19f",
+              "sourceStep": "/api/3/workflow_steps/3f4b0fec-d816-4755-bf6c-70a6bfad3f2c",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "b416d4bd-13e5-482d-a396-94c28f7630a8"
+            }
+          ],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "e7776417-5917-457c-a4f5-6a9960460cd5",
+          "id": 598,
+          "createUser": "/api/3/appliances/57545210-2adc-472b-a24f-2df6ee8dfe63",
+          "createDate": 1650618903.475811,
+          "modifyUser": "/api/3/people/3451141c-bac6-467c-8d72-85e0fab569ce",
+          "modifyDate": 1650622802.367346,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "usom",
+            "USOM"
+          ]
+        }
+      ]
+    }
+  ],
+  "exported_tags": [
+    "dataingestion",
+    "ingest",
+    "usom",
+    "create",
+    "fetch",
+    "USOM"
+  ]
+}
