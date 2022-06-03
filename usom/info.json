@@ -9,7 +9,7 @@
   "cs_compatible": true,
   "icon_small_name": "usom_small.png",
   "icon_large_name": "usom_large.png",
-  "help_online": "",
+  "help_online": "https://docs.fortinet.com/document/fortisoar/1.0.0/usom-feed/284/usom-feed-v1-0-0",
   "tags": [
     "ThreatIntel"
   ],
@@ -31,7 +31,7 @@
         "editable": true,
         "visible": true,
         "type": "text",
-        "description": "Usom XML URL",
+        "description": "Review the server URL of the USOM server to which you will connect and retrieve data. For example, https://www.usom.gov.tr/url-list.xml.",
         "name": "server_url",
         "tooltip": "Type USOM XML URL",
         "value": "https://www.usom.gov.tr/url-list.xml"
@@ -42,6 +42,7 @@
         "editable": true,
         "visible": true,
         "type": "checkbox",
+        "description": "Specifies whether the SSL certificate for the server is to be verified or not.",
         "value": "true",
         "name": "verify"
       }
@@ -51,20 +52,19 @@
     {
       "operation": "get_feed",
       "title": "Fetch Indicators",
-      "description": "USOM feed",
+      "description": "Retrieves a list of all indicators from USOM Feed. You can also filter the indicators retrieved from USOM Feed based on the last pull time you have specified. ",
       "category": "investigation",
       "annotation": "get_feed",
       "parameters": [
         {
           "title": "Modified After",
-          "description": "Last time the feeds were pulled",
           "type": "datetime",
           "name": "modified_after",
           "required": false,
           "editable": true,
           "visible": true,
           "tooltip": "The data will be returned from USOM Feed only if the feed has been refreshed after the specified time.",
-          "description": "A list of URL's data will be returned only if the feed has been refreshed after the specified time."
+          "description": "(Optional) Specify the time the feeds were last pulled from USOM Feed. In this case, the data is returned from USOM Feed only if the feed has been refreshed after the specified time."
         }
       ],
       "enabled": true,
